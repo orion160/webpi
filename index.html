@@ -48,35 +48,55 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
     <script>
-        const fetch_data = async (url) => {
-            const response = await fetch(url)
-            const data = await response.json()
-            console.log(data)
-            return data
-        }
-        
-        const products = fetch_data("https://gist.githubusercontent.com/josejbocanegra/be0461060d1c2d899740b8247089ba22/raw/916d2141e32e04031bda79c8886e8e4df0ae7f24/productos.json")
-        const orders = fetch_data("https://gist.githubusercontent.com/josejbocanegra/7b6febf87e9d986048a648487b35e693/raw/576531a2d0e601838fc3de997e021816a4b730f8/detallePedido.json")
+      const fetch_data = async (url) => {
+        const response = await fetch(url)
+        const data = await response.json()
+        console.log(data)
+        return data
+      }
 
-        
+      const fetchAllData = async () => {
+        const products = await fetch_data(
+          "https://gist.githubusercontent.com/josejbocanegra/be0461060d1c2d899740b8247089ba22/raw/916d2141e32e04031bda79c8886e8e4df0ae7f24/productos.json"
+        )
+        const orders = await fetch_data(
+          "https://gist.githubusercontent.com/josejbocanegra/7b6febf87e9d986048a648487b35e693/raw/576531a2d0e601838fc3de997e021816a4b730f8/detallePedido.json"
+        )
+
+        const product_data = products.map((item) => ({
+          id: item.idproducto,
+          name: item.nombreProducto,
+        }))
+
+        const order_data = products.map((item) => ({
+          id: item.idpedido,
+          product_id: item.idproducto,
+          quantity: item.cantidad,
+        }))
+
+        console.log(product_data)
+        console.log(order_data)
+      }
+
+      fetchAllData()
       /*
-      const tableBody = document.querySelector("#product-table tbody");
+      const tableBody = document.querySelector("#product-table tbody")
       data.forEach((product, index) => {
-        const row = document.createElement("tr");
+        const row = document.createElement("tr")
 
-        const id = document.createElement("td");
-        id.textContent = index + 1;
-        row.appendChild(id);
+        const id = document.createElement("td")
+        id.textContent = index + 1
+        row.appendChild(id)
 
-        const name = document.createElement("td");
-        name.textContent = product.name;
-        row.appendChild(name);
+        const name = document.createElement("td")
+        name.textContent = product.name
+        row.appendChild(name)
 
-        const purchased_units = document.createElement("td");
-        purchased_units.textContent = product.purchasedUnits;
-        row.appendChild(purchased_units);
-        tableBody.appendChild(row);
-      });
+        const purchased_units = document.createElement("td")
+        purchased_units.textContent = product.purchasedUnits
+        row.appendChild(purchased_units)
+        tableBody.appendChild(row)
+      })
       */
     </script>
   </body>
