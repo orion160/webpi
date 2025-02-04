@@ -68,14 +68,34 @@
           name: item.nombreProducto,
         }))
 
-        const order_data = products.map((item) => ({
-          id: item.idpedido,
+        const order_data = orders.map((item) => ({
           product_id: item.idproducto,
           quantity: item.cantidad,
         }))
 
+        order_data.push({ product_id: -1, quantity: -40 })
+        order_data.push({ product_id: -1, quantity: 52 })
+
+        const quantity_sum = order_data.reduce((acc, item) => {
+          if (acc[item.product_id]) {
+            acc[item.product_id] += item.quantity
+          } else {
+            acc[item.product_id] = item.quantity
+          }
+          return acc
+        }, {})
+
+        const sorted_product_data = products
+          .map(({ id, name }) => ({
+            id,
+            name,
+            quantity: quantity_sum[id] || 0,
+          }))
+          .sort((a, b) => b.quantity - a.quantity)
+
         console.log(product_data)
         console.log(order_data)
+        console.log(quantity_sum)
       }
 
       fetchAllData()
